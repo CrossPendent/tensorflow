@@ -246,6 +246,21 @@ tf_cc_binary(
     ],
 )
 
+py_binary(
+    name = "tf_practice",
+    srcs = [
+        "tf_practice.py",
+    ],
+    srcs_version = "PY2AND3",
+    deps = [
+        ":input_data",
+        ":models",
+        "//tensorflow:tensorflow_py",
+        "//third_party/py/numpy",
+        "@six_archive//:six",
+    ],
+)
+
 filegroup(
     name = "all_files",
     srcs = glob(

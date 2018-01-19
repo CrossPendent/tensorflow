@@ -187,6 +187,10 @@ class InputDataTest(test.TestCase):
     self.assertEqual(10, len(result_data))
     self.assertEqual(10, len(result_labels))
 
+    print('==testGetData==')
+    print('HW>>',result_data)
+    print('HW>>',result_labels)
+
   def testGetUnprocessedData(self):
     tmp_dir = self.get_temp_dir()
     wav_dir = os.path.join(tmp_dir, "wavs")
@@ -207,6 +211,9 @@ class InputDataTest(test.TestCase):
     self.assertEqual(10, len(result_data))
     self.assertEqual(10, len(result_labels))
 
+    print('==testGetUnprocessedData==')
+    print('HW>>',result_data)
+    print('HW>>',result_labels)
 
 if __name__ == "__main__":
   test.main()

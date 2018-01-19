@@ -1,45 +1,24 @@
-# Copyright 2015 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-
-"""A very simple MNIST classifier.
-
-See extensive documentation at
-https://www.tensorflow.org/get_started/mnist/beginners
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
 import argparse
 import sys
-
-from tensorflow.examples.tutorials.mnist import input_data
+import grip_input_data
 
 import tensorflow as tf
 
-FLAGS = None
-
+RAW_DATA_SIZE = 450
+g_labels = ['other', 'slide_up', 'slide_down']
 
 def main(_):
   # Import data
-  mnist = input_data.read_data_sets(FLAGS.data_dir)
+  grip_data = grip_input_data.GripData('./', g_labels)
 
   # Create the model
-  x = tf.placeholder(tf.float32, [None, 784])
-  W = tf.Variable(tf.zeros([784, 10]))
-  b = tf.Variable(tf.zeros([10]))
+  x = tf.placeholder(tf.float32, [None, RAW_DATA_SIZE])
+  W = tf.Variable(tf.zeros([RAW_DATA_SIZE, len(g_labels)]))
+  b = tf.Variable(tf.zeros([len(g_labels)]))
   y = tf.matmul(x, W) + b
 
   # Define loss and optimizer
@@ -61,14 +40,15 @@ def main(_):
   tf.global_variables_initializer().run()
   # Train
   for _ in range(1000):
-    batch_xs, batch_ys = mnist.train.next_batch(100)
+    batch_xs, batch_ys = grip_data.getNextTrainBatch(100) # mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
   # Test trained model
   correct_prediction = tf.equal(tf.argmax(y, 1), y_)
   accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-  print(sess.run(accuracy, feed_dict={x: mnist.test.images,
-                                      y_: mnist.test.labels}))
+  test_data = grip_data.getTestData()
+  print(sess.run(accuracy, feed_dict={x: test_data['x'],
+                                      y_: test_data['y']}))
 
 
 if __name__ == '__main__':

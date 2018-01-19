@@ -1,3 +1,5 @@
 {
-  "git": false
+  "branch": "refs/heads/sensor_r1.5",
+  "git": true,
+  "path": "/home/tfmachine/git-tensorflow/tensorflow"
 }

@@ -2,11 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import numpy as np
-import tensorflow as tf
+import grip_input_data as gid
+
+def _get_data():
+  return {'x':[1,2,3,4,5,6], 'y':[1,1,1,1,1,1]}
 
 if __name__ == '__main__':
-  x = np.array(range(1,10), dtype=np.int32)
-  print(x)
-  np.random.shuffle(x)
-  print(x)
+  data = {'x':[], 'y':[]}
+  data += _get_data()
+  print(data)
+  data = gid.GripData('./', ['others'])
+  data._load_raw_data('./')
